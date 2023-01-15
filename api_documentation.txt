@@ -1,0 +1,93 @@
+
+1. signup
+  - type: post: http://10.10.11.117:8080/api/signup
+
+  - sending data: 
+  	name:
+  	password:
+
+  - return:
+    (result == '1') => username already exists
+    (result == '2') => signup success
+
+2. login
+  -type:post: http://10.10.11.117:8080/api/login
+
+  - sending data
+    name:
+    password:
+
+  - return:
+    result, id: (result == '1') => success
+    result: (result == '2') => no registered
+    result: (result == '3') => wrong password
+ 
+
+3. Read user's data
+send : id
+return : 3 numbers of total fishes, coin amount
+
+- post: http://10.10.11.117:8080/api/getUserData
+- return
+	BassCaught, MuskieCaught, BlueGillCaught, BassTotal, MuskieTotal, BlueGillTotal(all: int)
+
+
+	e.g:
+	 -send id :17
+
+	 -receive {
+	    "BassCaught": 40,
+	    "MuskieCaught": 5,
+	    "BlueGillCaught": 50,
+	    "BassTotal": 50,
+	    "MuskieTotal": 6,
+	    "BlueGillTotal": 70,
+	    "coin": 500
+}
+
+4. When player catches new fish
+send : id , fish_name
+return : 3 numbers of total fishes, caught fishes
+
+- post: http://10.10.11.117:8080/api/catch
+
+e.g:
+
+-send
+  id: 17
+  fish_name: Bass (can be one of Bass, Muskie, BlueGill)
+
+ -receive
+	 {
+	    "BassCaught": 1,
+	    "MuskieCaught": 0,
+	    "BlueGillCaught": 0,
+	    "BassTotal": 1,
+	    "MuskieTotal": 0,
+	    "BlueGillTotal": 0
+	}
+
+5. When the player presses sell button
+send : id, 3 numbers of sold fishes, coin plus (Bass, Muskie, BlueGill, coin)
+return : 3 numbers of caught fishes, coin amount
+
+- post: http://10.10.11.117:8080/api/sell
+
+
+e.g:
+
+	-send
+	 id:17
+	 bass:1
+	 muskie: 2
+	 blueGill: 2
+	 coin: 100
+
+	-receive
+	{
+	    "bassCaught": 9,
+	    "muskieCaught": 1,
+	    "blueGillCaught": 9,
+	    "coin": 500
+	}
+
